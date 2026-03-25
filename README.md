@@ -77,7 +77,7 @@ uv venv --python=3.12 --seed --clear ./venv
 
 # Activate the Virtual Environment
 source ./venv/bin/activate     # For Linux
-call ./venv/Scripts/Activate   # For Windows
+call ./venv/Scripts/activate   # For Windows
 
 # Install Pytorch based on your Hardware
 uv pip install torch torchvision torchaudio
