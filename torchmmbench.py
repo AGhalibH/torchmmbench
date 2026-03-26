@@ -39,14 +39,17 @@ def get_device(device_str):
 def get_device_name(device: torch.device) -> str:
     if device.type == "cuda":
         props = torch.cuda.get_device_properties(device)
+        gpu_memory = props.total_memory / (1024**3)
         arch = getattr(props, "gcnArchName", None)
         if arch:
-            return f"{props.name} | {arch}"
-        return f"{props.name} | CC {props.major}.{props.minor}"
+            return f"{props.name} ({gpu_memory:.1f} GB) | {arch}"
+        return f"{props.name} ({gpu_memory:.1f} GB) | CC {props.major}.{props.minor}"
 
     elif device.type == "xpu":
         if hasattr(torch, "xpu"):
-            return torch.xpu.get_device_name(device)
+            props = torch.xpu.get_device_properties(device)
+            gpu_memory = props.total_memory / (1024**3)
+            return f"{props.name} ({gpu_memory:.1f} GB)"
         return "XPU (unsupported build)"
 
     elif device.type == "cpu":
